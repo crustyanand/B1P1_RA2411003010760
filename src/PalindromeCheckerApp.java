@@ -2,13 +2,27 @@ import java.util.Stack;
 import java.util.Deque;
 import java.util.ArrayDeque;
 
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
+public class PalindromeCheckerApp {
 
-class StackStrategy implements PalindromeStrategy {
+    public static boolean twoPointerCheck(String input) {
 
-    public boolean checkPalindrome(String input) {
+        String normalized = input.toLowerCase().replaceAll("\\s+", "");
+
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+
+        return true;
+    }
+
+    public static boolean stackCheck(String input) {
 
         String normalized = input.toLowerCase().replaceAll("\\s+", "");
 
@@ -26,11 +40,8 @@ class StackStrategy implements PalindromeStrategy {
 
         return true;
     }
-}
 
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
+    public static boolean dequeCheck(String input) {
 
         String normalized = input.toLowerCase().replaceAll("\\s+", "");
 
@@ -41,7 +52,6 @@ class DequeStrategy implements PalindromeStrategy {
         }
 
         while (deque.size() > 1) {
-
             if (deque.removeFirst() != deque.removeLast()) {
                 return false;
             }
@@ -49,30 +59,41 @@ class DequeStrategy implements PalindromeStrategy {
 
         return true;
     }
-}
-
-public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String input = "Never Odd Or Even";
 
-        PalindromeStrategy strategy;
+        long startTime;
+        long endTime;
 
-        strategy = new StackStrategy();
+        startTime = System.nanoTime();
+        boolean result1 = twoPointerCheck(input);
+        endTime = System.nanoTime();
+        long time1 = endTime - startTime;
 
-        boolean result = strategy.checkPalindrome(input);
+        startTime = System.nanoTime();
+        boolean result2 = stackCheck(input);
+        endTime = System.nanoTime();
+        long time2 = endTime - startTime;
 
-        System.out.println("Using Stack Strategy");
+        startTime = System.nanoTime();
+        boolean result3 = dequeCheck(input);
+        endTime = System.nanoTime();
+        long time3 = endTime - startTime;
+
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
+        System.out.println();
 
-        strategy = new DequeStrategy();
+        System.out.println("Two Pointer Result : " + result1);
+        System.out.println("Execution Time : " + time1 + " ns");
+        System.out.println();
 
-        result = strategy.checkPalindrome(input);
+        System.out.println("Stack Result : " + result2);
+        System.out.println("Execution Time : " + time2 + " ns");
+        System.out.println();
 
-        System.out.println("\nUsing Deque Strategy");
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
+        System.out.println("Deque Result : " + result3);
+        System.out.println("Execution Time : " + time3 + " ns");
     }
 }
