@@ -1,20 +1,50 @@
-class PalindromeChecker {
+import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
+
+interface PalindromeStrategy {
+    boolean checkPalindrome(String input);
+}
+
+class StackStrategy implements PalindromeStrategy {
 
     public boolean checkPalindrome(String input) {
 
         String normalized = input.toLowerCase().replaceAll("\\s+", "");
 
-        int start = 0;
-        int end = normalized.length() - 1;
+        Stack<Character> stack = new Stack<>();
 
-        while (start < end) {
+        for (char c : normalized.toCharArray()) {
+            stack.push(c);
+        }
 
-            if (normalized.charAt(start) != normalized.charAt(end)) {
+        for (char c : normalized.toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
+        }
 
-            start++;
-            end--;
+        return true;
+    }
+}
+
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean checkPalindrome(String input) {
+
+        String normalized = input.toLowerCase().replaceAll("\\s+", "");
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : normalized.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
         }
 
         return true;
@@ -27,10 +57,21 @@ public class PalindromeCheckerApp {
 
         String input = "Never Odd Or Even";
 
-        PalindromeChecker checker = new PalindromeChecker();
+        PalindromeStrategy strategy;
 
-        boolean result = checker.checkPalindrome(input);
+        strategy = new StackStrategy();
 
+        boolean result = strategy.checkPalindrome(input);
+
+        System.out.println("Using Stack Strategy");
+        System.out.println("Input : " + input);
+        System.out.println("Is Palindrome? : " + result);
+
+        strategy = new DequeStrategy();
+
+        result = strategy.checkPalindrome(input);
+
+        System.out.println("\nUsing Deque Strategy");
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
     }
