@@ -1,29 +1,37 @@
-public class PalindromeCheckerApp {
+class PalindromeChecker {
 
-    public static void main(String[] args) {
-
-        String input = "Never Odd Or Even";
+    public boolean checkPalindrome(String input) {
 
         String normalized = input.toLowerCase().replaceAll("\\s+", "");
 
         int start = 0;
         int end = normalized.length() - 1;
 
-        boolean isPalindrome = true;
-
         while (start < end) {
 
             if (normalized.charAt(start) != normalized.charAt(end)) {
-                isPalindrome = false;
-                break;
+                return false;
             }
 
             start++;
             end--;
         }
 
-        System.out.println("Original Input : " + input);
-        System.out.println("Normalized Input : " + normalized);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        return true;
+    }
+}
+
+public class PalindromeCheckerApp {
+
+    public static void main(String[] args) {
+
+        String input = "Never Odd Or Even";
+
+        PalindromeChecker checker = new PalindromeChecker();
+
+        boolean result = checker.checkPalindrome(input);
+
+        System.out.println("Input : " + input);
+        System.out.println("Is Palindrome? : " + result);
     }
 }
